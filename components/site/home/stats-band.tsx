@@ -1,9 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
+import { Briefcase, Clock3, Gavel, TrendingUp, type LucideIcon } from "lucide-react";
 
 type Stat = {
+  Icon: LucideIcon;
   value: number;
   suffix?: string;
   prefix?: string;
@@ -12,10 +21,35 @@ type Stat = {
 };
 
 const stats: Stat[] = [
-  { value: 18, suffix: "+", label: "Years trying motorcycle cases", sub: "In Texas state and federal court" },
-  { value: 500, suffix: "+", label: "Riders represented", sub: "Across Harris County and Greater Houston" },
-  { value: 100, suffix: "M+", prefix: "$", label: "Recovered for clients", sub: "Combined verdicts and settlements" },
-  { value: 24, suffix: "/7", label: "Intake availability", sub: "Talk to an attorney, not a chatbot" },
+  {
+    Icon: Gavel,
+    value: 18,
+    suffix: "+",
+    label: "Years trying motorcycle cases",
+    sub: "In Texas state and federal court",
+  },
+  {
+    Icon: Briefcase,
+    value: 500,
+    suffix: "+",
+    label: "Riders represented",
+    sub: "Across Harris County and Greater Houston",
+  },
+  {
+    Icon: TrendingUp,
+    value: 100,
+    suffix: "M+",
+    prefix: "$",
+    label: "Recovered for clients",
+    sub: "Combined verdicts and settlements",
+  },
+  {
+    Icon: Clock3,
+    value: 24,
+    suffix: "/7",
+    label: "Intake availability",
+    sub: "Talk to an attorney, not a chatbot",
+  },
 ];
 
 export function StatsBand() {
@@ -44,13 +78,21 @@ export function StatsBand() {
             >
               <dt className="sr-only">{s.label}</dt>
               <dd>
-                <Counter
-                  to={s.value}
-                  prefix={s.prefix}
-                  suffix={s.suffix}
-                  active={inView}
-                  reduceMotion={!!reduceMotion}
-                />
+                <span
+                  aria-hidden
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background text-foreground"
+                >
+                  <s.Icon className="h-4 w-4" />
+                </span>
+                <div className="mt-4">
+                  <Counter
+                    to={s.value}
+                    prefix={s.prefix}
+                    suffix={s.suffix}
+                    active={inView}
+                    reduceMotion={!!reduceMotion}
+                  />
+                </div>
                 <p className="mt-2 text-sm font-medium text-foreground">{s.label}</p>
                 {s.sub && (
                   <p className="mt-1 text-xs text-muted-foreground">{s.sub}</p>

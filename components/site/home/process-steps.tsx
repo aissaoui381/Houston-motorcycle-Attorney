@@ -2,27 +2,39 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Calculator, Handshake, PhoneCall, Search, type LucideIcon } from "lucide-react";
 
-const steps = [
+type Step = {
+  Icon: LucideIcon;
+  n: string;
+  title: string;
+  body: string;
+};
+
+const steps: Step[] = [
   {
+    Icon: PhoneCall,
     n: "01",
     title: "Tell us what happened",
     body:
       "Submit your information or call. An attorney — not an intake clerk — reviews every new matter and calls you back within one business day. Free, confidential.",
   },
   {
+    Icon: Search,
     n: "02",
     title: "We investigate the crash",
     body:
       "We preserve evidence, pull police and 911 records, secure surveillance and bodycam footage before it's overwritten, and retain reconstruction experts where needed.",
   },
   {
+    Icon: Calculator,
     n: "03",
     title: "We build the damages model",
     body:
       "Past medical, future care, lost earning capacity, mental anguish, impairment. We work with treating doctors and life-care planners to capture the full impact — not just the ER invoice.",
   },
   {
+    Icon: Handshake,
     n: "04",
     title: "We negotiate from a trial posture",
     body:
@@ -88,10 +100,14 @@ export function ProcessSteps() {
               className="relative grid grid-cols-[auto_1fr] items-start gap-6 pl-0 sm:gap-10"
             >
               <span className="relative z-10 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-background text-xs font-semibold sm:h-16 sm:w-16 sm:text-base">
-                {s.n}
+                <s.Icon aria-hidden className="hidden h-5 w-5 sm:block" />
+                <span className="sm:hidden">{s.n}</span>
               </span>
               <div className="pt-1 sm:pt-4">
-                <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Step {s.n}
+                </p>
+                <h3 className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
                   {s.title}
                 </h3>
                 <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">

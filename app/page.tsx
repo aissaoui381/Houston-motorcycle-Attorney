@@ -6,6 +6,7 @@ import { Manifesto } from "@/components/site/home/manifesto";
 import { PracticeGrid } from "@/components/site/home/practice-grid";
 import { ProcessSteps } from "@/components/site/home/process-steps";
 import { ServiceArea } from "@/components/site/home/service-area";
+import { LeadAttorney } from "@/components/site/home/lead-attorney";
 import { ClosingCta } from "@/components/site/home/closing-cta";
 
 export const metadata: Metadata = buildMetadata({
@@ -30,6 +31,7 @@ export default function HomePage() {
       <PracticeGrid />
       <ProcessSteps />
       <ServiceArea />
+      <LeadAttorney />
       <ClosingCta />
     </>
   );

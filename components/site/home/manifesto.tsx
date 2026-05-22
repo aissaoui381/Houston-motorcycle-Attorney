@@ -2,12 +2,9 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Quote } from "lucide-react";
 
-const lines = [
-  "Insurance carriers",
-  "treat riders differently.",
-  "We don't.",
-];
+const headline = "Insurance carriers treat riders differently. We don't.";
 
 const supporting = [
   "Adjusters dismiss riders as risk-takers. Defense lawyers play to juror bias. The first offer is almost always a fraction of true value.",
@@ -24,6 +21,8 @@ export function Manifesto() {
   });
   const lineY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
+  const words = headline.split(" ");
+
   return (
     <section
       ref={sectionRef}
@@ -37,28 +36,41 @@ export function Manifesto() {
       />
 
       <div className="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:py-32">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-15% 0px" }}
+          transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-10 inline-flex h-12 w-12 items-center justify-center rounded-full border border-border bg-secondary"
+        >
+          <Quote aria-hidden className="h-5 w-5 text-foreground" />
+        </motion.div>
+
         <h2 id="manifesto-heading" className="sr-only">
           Why a motorcycle-specific firm matters
         </h2>
 
-        <div className="text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-          {lines.map((line, i) => (
+        <p
+          aria-hidden
+          className="flex flex-wrap gap-x-3 gap-y-2 text-balance text-4xl font-semibold leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl"
+        >
+          {words.map((word, i) => (
             <motion.span
-              key={line}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              key={`${word}-${i}`}
+              initial={{ opacity: 0, y: 24, filter: reduceMotion ? "blur(0px)" : "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               viewport={{ once: true, margin: "-20% 0px" }}
               transition={{
-                duration: reduceMotion ? 0 : 0.8,
-                delay: reduceMotion ? 0 : i * 0.18,
+                duration: reduceMotion ? 0 : 0.7,
+                delay: reduceMotion ? 0 : i * 0.06,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="block"
+              className="inline-block"
             >
-              {line}
+              {word}
             </motion.span>
           ))}
-        </div>
+        </p>
 
         <div className="mt-12 grid gap-8 border-t border-border pt-12 md:grid-cols-2 md:gap-12">
           {supporting.map((p, i) => (
