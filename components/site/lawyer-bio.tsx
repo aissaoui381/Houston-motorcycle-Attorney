@@ -1,17 +1,64 @@
 import Image from "next/image";
 import { Award, GraduationCap, Scale } from "lucide-react";
 import type { Lawyer } from "@/content/lawyers";
+import { site } from "@/lib/site";
+import { JsonLd } from "@/components/site/json-ld";
 
 type LawyerBioProps = {
   lawyer: Lawyer;
 };
 
+function buildAttorneySchema(lawyer: Lawyer) {
+  const id = `${site.url}/attorneys/${lawyer.slug}#person`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Attorney",
+    "@id": id,
+    name: lawyer.name,
+    jobTitle: lawyer.title,
+    image: `${site.url}${lawyer.image}`,
+    description: lawyer.bio.join(" "),
+    url: `${site.url}/attorneys/${lawyer.slug}`,
+    knowsAbout: [
+      "Motorcycle Accident Litigation",
+      "Personal Injury",
+      "Wrongful Death",
+      "Catastrophic Injury",
+      "Texas Tort Law",
+    ],
+    hasCredential: lawyer.credentials.map((c) => ({
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: c,
+    })),
+    alumniOf: lawyer.education.map((e) => ({
+      "@type": "EducationalOrganization",
+      name: e.school,
+    })),
+    memberOf: lawyer.barAdmissions.map((b) => ({
+      "@type": "Organization",
+      name: b,
+    })),
+    worksFor: { "@id": `${site.url}#legalservice` },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.address.street,
+      addressLocality: site.address.city,
+      addressRegion: site.address.region,
+      postalCode: site.address.postalCode,
+      addressCountry: site.address.country,
+    },
+    telephone: site.telephone,
+  };
+}
+
 export function LawyerBio({ lawyer }: LawyerBioProps) {
   return (
-    <article
-      aria-labelledby={`bio-${lawyer.slug}`}
-      className="grid gap-8 rounded-xl border border-border bg-background p-6 sm:p-8 md:grid-cols-[180px_1fr] md:gap-10"
-    >
+    <>
+      <JsonLd data={buildAttorneySchema(lawyer)} />
+      <article
+        aria-labelledby={`bio-${lawyer.slug}`}
+        className="grid gap-8 rounded-xl border border-border bg-background p-6 sm:p-8 md:grid-cols-[180px_1fr] md:gap-10"
+      >
       <div className="flex md:block">
         <div className="relative h-32 w-32 overflow-hidden rounded-lg bg-secondary md:h-44 md:w-44">
           <Image
@@ -82,5 +129,6 @@ export function LawyerBio({ lawyer }: LawyerBioProps) {
         </div>
       </div>
     </article>
+    </>
   );
 }
