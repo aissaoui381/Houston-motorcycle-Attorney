@@ -1,13 +1,25 @@
 // Single source of truth for firm details (NAP, links, schema).
 // TODO: replace placeholders with verified firm info before launch.
 
+// Resolve the canonical site URL. Precedence:
+//   1. NEXT_PUBLIC_SITE_URL — set explicitly in Vercel / .env for production
+//   2. VERCEL_URL           — auto-injected by Vercel for every deployment (no scheme)
+//   3. localhost            — dev fallback
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_URL;
+  if (vercel) return `https://${vercel}`;
+  return "http://localhost:3000";
+}
+
 export const site = {
   name: "Houston Motorcycle Law",
   legalName: "Houston Motorcycle Law, PLLC",
   shortName: "HML",
   description:
     "Houston motorcycle accident attorneys representing injured riders and families across Harris County and Greater Houston.",
-  url: "https://houstonmotorcyclelaw.com",
+  url: resolveSiteUrl(),
   locale: "en-US",
   telephone: "+1-713-555-0100",
   email: "intake@houstonmotorcyclelaw.com",
