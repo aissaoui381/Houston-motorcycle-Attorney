@@ -5,6 +5,7 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { LegalServiceJsonLd } from "@/components/site/json-ld";
+import { ConvexClientProvider } from "@/app/ConvexClientProvider";
 import { buildMetadata } from "@/lib/seo";
 
 const geistSans = Geist({
@@ -47,12 +48,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <LegalServiceJsonLd />
-        <SiteHeader />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        <ConvexClientProvider>
+          <LegalServiceJsonLd />
+          <SiteHeader />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <SiteFooter />
+        </ConvexClientProvider>
       </body>
     </html>
   );

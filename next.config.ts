@@ -1,7 +1,11 @@
+import { withBotId } from "botid/next/config";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Silences the multi-lockfile workspace-root warning on Vercel.
+  turbopack: {
+    root: import.meta.dirname,
+  },
 };
 
-export default nextConfig;
+export default withBotId(nextConfig);
